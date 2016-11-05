@@ -64,17 +64,13 @@ const Frames = React.createClass({
     );
   },
 
-  renderFrames() {
-    let { frames } = this.props;
-    if (!frames) {
-      return null;
-    }
+  renderFrames(frames = []) {
+    const numFramesToShow =
+      this.state.showAllFrames ? frames.size : NUM_FRAMES_SHOWN;
+    const framesToShow =
+      frames.slice(0, numFramesToShow).map(frame => this.renderFrame(frame));
 
-    const numFramesToShow = this.state.showAllFrames
-      ? frames.size : NUM_FRAMES_SHOWN;
-    frames = frames.slice(0, numFramesToShow);
-
-    return dom.ul({}, frames.map(frame => this.renderFrame(frame)));
+    return dom.ul({}, framesToShow);
   },
 
   renderToggleButton() {
@@ -107,7 +103,7 @@ const Frames = React.createClass({
 
     return div(
       { className: "pane frames" },
-      this.renderFrames(),
+      this.renderFrames(frames),
       this.renderToggleButton()
     );
   }
